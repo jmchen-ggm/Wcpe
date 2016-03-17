@@ -2,7 +2,6 @@
 
 世界那么大，组件那么小。Wcpe，做Android Wear和Android Phone之间的通讯框架。
 
-[![Join the chat at https://gitter.im/wequick/Small](https://badges.gitter.im/wequick/Small.svg)](https://gitter.im/wequick/Small?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![License Apache2.0](https://img.shields.io/hexpm/l/plug.svg)][license]
 
 
