@@ -6,7 +6,7 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "com.cjm.wcpe"
+        applicationId "com.cjm.wcpe.sample"
         minSdkVersion 20
         targetSdkVersion 23
         versionCode 1
@@ -22,6 +22,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.google.android.support:wearable:1.3.0'
-    compile 'com.google.android.gms:play-services-wearable:8.4.0'
+    compile project(':sdk.wear')
 }

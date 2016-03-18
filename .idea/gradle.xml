@@ -11,6 +11,8 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/mobile" />
             <option value="$PROJECT_DIR$/sdk" />
+            <option value="$PROJECT_DIR$/sdk.mobile" />
+            <option value="$PROJECT_DIR$/sdk.wear" />
             <option value="$PROJECT_DIR$/wear" />
           </set>
         </option>
