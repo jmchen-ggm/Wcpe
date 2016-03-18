@@ -72,7 +72,7 @@ public class WcpeDataLayerService extends WearableListenerService {
             GoogleApiClient googleApiClient = new GoogleApiClient.Builder(Wcpe.getInstance().getContext()).addApi(Wearable.API).build();
             ConnectionResult result = googleApiClient.blockingConnect(DEFAULT_AWAIT_SECONDS, TimeUnit.SECONDS);
             if (!result.isSuccess()) {
-                LogUtil.e(TAG, "errorCode %d errorMsg %s", result.getErrorCode(), result.getErrorMessage());
+                LogUtil.e(TAG, "errorCode %d", result.getErrorCode());
             } else {
                 Status status = channel.addListener(googleApiClient, this).await(DEFAULT_AWAIT_SECONDS, TimeUnit.SECONDS);
                 if (!status.isSuccess()) {

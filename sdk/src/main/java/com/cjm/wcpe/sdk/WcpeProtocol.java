@@ -21,4 +21,6 @@ public class WcpeProtocol {
         public final static int NO_CONNECT_NODE_ERROR = 0x10000200;
         public final static int TIMEOUT_ERROR = 0x10000300;
     }
+
+    public final static int MAX_MESSAGE_PACK_SIZE = 90 * 1024;
 }

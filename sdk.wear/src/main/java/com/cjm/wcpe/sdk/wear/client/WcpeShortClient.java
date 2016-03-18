@@ -11,9 +11,6 @@ import com.cjm.wcpe.sdk.wear.Wcpe;
 import com.google.android.gms.wearable.Channel;
 import com.google.android.gms.wearable.ChannelApi;
 
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReentrantLock;
-
 /**
  * Created by jiaminchen on 16/3/18.
  */
@@ -26,12 +23,10 @@ public class WcpeShortClient implements IClientCallbackListener, ChannelApi.Chan
     private IConnection connection;
     private Status status = Status.Init;
     private WcpeProtocol.From from;
-    private ReentrantLock lock;
 
     public WcpeShortClient(Context context, WcpeProtocol.From from) {
         this.connection = ConnectionFactory.createConnection(context);
         this.from = from;
-        this.lock = new ReentrantLock();
     }
 
     private long timeout = DEFAULT_TIMEOUT;
@@ -69,7 +64,7 @@ public class WcpeShortClient implements IClientCallbackListener, ChannelApi.Chan
         }
         Wcpe.getInstance().addListener(req.funId, this);
         try {
-            lock.tryLock(timeout, TimeUnit.MILLISECONDS);
+            wait(timeout);
         } catch (InterruptedException e) {
         }
         Wcpe.getInstance().removeListener(req.funId, this);
@@ -93,9 +88,8 @@ public class WcpeShortClient implements IClientCallbackListener, ChannelApi.Chan
             resp.data = entity.data;
             resp.channel = entity.channel;
             status = Status.Resp;
-            try {
-                lock.unlock();
-            } catch (Exception e) {
+            synchronized (this) {
+                notify();
             }
         }
         return false;

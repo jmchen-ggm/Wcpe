@@ -58,7 +58,7 @@ public class Wcpe {
                 LogUtil.w(TAG, "No listener for this event %d.", entity.path.funId);
                 return false;
             }
-            resultListeners = new LinkedList<>();
+            resultListeners = new LinkedList<>(listeners);
         }
         trigger(resultListeners, entity);
         return true;

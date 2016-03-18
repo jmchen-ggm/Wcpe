@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import com.cjm.wcpe.sdk.WcpeProtocol;
 import com.cjm.wcpe.sdk.util.LogUtil;
 import com.cjm.wcpe.sdk.wear.Wcpe;
 import com.cjm.wcpe.sdk.wear.client.WcpeShortReq;
@@ -38,6 +39,8 @@ public class SampleUI extends Activity implements WcpeShortTask.Listener {
 
     @Override
     public void onEnd(WcpeShortReq req, WcpeShortResp resp) {
-        LogUtil.i(TAG, "onEnd");
+        if (resp.code == WcpeProtocol.WcpeCode.OK) {
+            LogUtil.i(TAG, "onEnd %s", new String(resp.data));
+        }
     }
 }

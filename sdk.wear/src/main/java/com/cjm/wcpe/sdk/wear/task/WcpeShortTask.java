@@ -3,7 +3,6 @@ package com.cjm.wcpe.sdk.wear.task;
 import android.os.Handler;
 import android.os.Looper;
 import com.cjm.wcpe.sdk.WcpeProtocol;
-import com.cjm.wcpe.sdk.wear.R;
 import com.cjm.wcpe.sdk.wear.Wcpe;
 import com.cjm.wcpe.sdk.wear.client.WcpeShortClient;
 import com.cjm.wcpe.sdk.wear.client.WcpeShortReq;
