@@ -10,16 +10,25 @@ import java.util.List;
  */
 public class TestShortServer extends BaseWcpeServer {
     private final static String TAG = "Wcpe.TestShortServer";
-    public final static int TEST_FUN_ID = 0x01000;
+    public final static int TEST_SMALL_FUN_ID = 0x01000;
+    public final static int TEST_LARGE_FUN_ID = 0x02000;
 
     @Override
     public List<Integer> getFunIdList() {
         ArrayList<Integer> funIdList = new ArrayList<>();
-        funIdList.add(TEST_FUN_ID);
+        funIdList.add(TEST_SMALL_FUN_ID);
+        funIdList.add(TEST_LARGE_FUN_ID);
         return funIdList;
     }
+
     @Override
     public byte[] handleData(int funId, byte[] data) {
-        return "response test string".getBytes();
+        switch (funId) {
+            case TEST_LARGE_FUN_ID:
+                return new byte[1024 * 4000];
+            case  TEST_SMALL_FUN_ID:
+                return "response test string".getBytes();
+        }
+        return null;
     }
 }

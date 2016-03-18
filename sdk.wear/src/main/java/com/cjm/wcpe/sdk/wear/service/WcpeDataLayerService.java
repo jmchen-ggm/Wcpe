@@ -29,9 +29,9 @@ public class WcpeDataLayerService extends WearableListenerService {
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
-        LogUtil.v(TAG, "onMessageReceived");
+        LogUtil.v(TAG, "onMessageReceived %s", messageEvent.getPath());
         WcpePathUtil.Path path = WcpePathUtil.parser(messageEvent.getPath());
-        if (path != null && path.from == WcpeProtocol.From.Phone) {
+        if (path != null && path.from == WcpeProtocol.From.Phone && System.currentTimeMillis() - path.timestamp <= 5 * 1000) {
             ClientCallbackEntity entity = new ClientCallbackEntity();
             entity.path = path;
             entity.data = messageEvent.getData();
@@ -41,9 +41,9 @@ public class WcpeDataLayerService extends WearableListenerService {
 
     @Override
     public void onChannelOpened(Channel channel) {
-        LogUtil.v(TAG, "onChannelOpened");
+        LogUtil.v(TAG, "onChannelOpened %s", channel.getPath());
         WcpePathUtil.Path path = WcpePathUtil.parser(channel.getPath());
-        if (path != null && path.from == WcpeProtocol.From.Wear && System.currentTimeMillis() - path.timestamp <= 5 * 1000) {
+        if (path != null && path.from == WcpeProtocol.From.Phone && System.currentTimeMillis() - path.timestamp <= 5 * 1000) {
             if (path.connectType == WcpeProtocol.ConnectType.Short) {
                 ClientCallbackEntity entity = new ClientCallbackEntity();
                 entity.path = path;

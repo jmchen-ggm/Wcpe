@@ -107,7 +107,7 @@ public class WcpeDataLayerService extends WearableListenerService {
         }
 
         @Override
-        public void onChannelClosed(Channel channel,  int closeReason, int appSpecificErrorCode) {
+        public void onChannelClosed(Channel channel, int closeReason, int appSpecificErrorCode) {
             if (channel.getPath().equals(channel.getPath())) {
                 isClosed = true;
             }

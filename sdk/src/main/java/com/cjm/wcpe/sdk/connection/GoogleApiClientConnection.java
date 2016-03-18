@@ -9,6 +9,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.wearable.*;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
@@ -207,6 +208,29 @@ public class GoogleApiClientConnection implements IConnection {
             return WcpeProtocol.WcpeCode.ERROR;
         }
         Status status = channel.removeListener(googleApiClient, listener).await(DEFAULT_AWAIT_SECONDS, TimeUnit.SECONDS);
+        if (status.isSuccess()) {
+            return WcpeProtocol.WcpeCode.OK;
+        } else {
+            return WcpeProtocol.WcpeCode.ERROR;
+        }
+    }
+
+    @Override
+    public InputStream getChannelInputStream(Channel channel) {
+        if (!checkConnection()) {
+            return null;
+        }
+        Channel.GetInputStreamResult result = channel.getInputStream(googleApiClient).await(DEFAULT_AWAIT_SECONDS, TimeUnit.SECONDS);
+        if (result.getStatus().isSuccess()) {
+            return result.getInputStream();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public int closeChannel(Channel channel) {
+        Status status = channel.close(googleApiClient).await(DEFAULT_AWAIT_SECONDS, TimeUnit.SECONDS);
         if (status.isSuccess()) {
             return WcpeProtocol.WcpeCode.OK;
         } else {

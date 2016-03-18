@@ -11,6 +11,10 @@ import com.cjm.wcpe.sdk.wear.Wcpe;
 import com.google.android.gms.wearable.Channel;
 import com.google.android.gms.wearable.ChannelApi;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
  * Created by jiaminchen on 16/3/18.
  */
@@ -78,6 +82,32 @@ public class WcpeShortClient implements IClientCallbackListener, ChannelApi.Chan
         } else {
             resp.code = WcpeProtocol.WcpeCode.OK;
         }
+        if (resp.code == WcpeProtocol.WcpeCode.OK && resp.channel != null && resp.data == null) {
+            connection.addChannelListener(resp.channel, this);
+            InputStream is = connection.getChannelInputStream(resp.channel);
+            if (is != null) {
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream(resp.path.contentLength);
+                byte[] buffer = new byte[1024];
+                int read = 0;
+                while (!isChannelClosed || read > 0) {
+                    try {
+                        read = is.read(buffer);
+                        if (read > 0) {
+                            outputStream.write(buffer, 0, read);
+                        }
+                        LogUtil.i(TAG, "read channel %d", read);
+                    } catch (IOException e) {
+                    }
+                }
+                try {
+                    is.close();
+                } catch (IOException e) {
+                }
+                resp.data = outputStream.toByteArray();
+            }
+            connection.removeChannelListener(resp.channel, this);
+            resp.channel = null;
+        }
         return resp;
     }
 
@@ -95,7 +125,7 @@ public class WcpeShortClient implements IClientCallbackListener, ChannelApi.Chan
         return false;
     }
 
-    private boolean isChannelClose;
+    private boolean isChannelClosed;
     @Override
     public void onChannelOpened(Channel channel) {
 
@@ -103,17 +133,19 @@ public class WcpeShortClient implements IClientCallbackListener, ChannelApi.Chan
 
     @Override
     public void onChannelClosed(Channel channel, int closeReason, int appSpecificErrorCode) {
-        isChannelClose = true;
+        LogUtil.i(TAG, "onChannelClosed %d %d", closeReason, appSpecificErrorCode);
+        isChannelClosed = true;
     }
 
     @Override
     public void onInputClosed(Channel channel, int closeReason, int appSpecificErrorCode) {
-        isChannelClose = true;
+        LogUtil.i(TAG, " onInputClosed%d %d", closeReason, appSpecificErrorCode);
+        isChannelClosed = true;
     }
 
     @Override
     public void onOutputClosed(Channel channel, int closeReason, int appSpecificErrorCode) {
-
+        LogUtil.i(TAG, " onOutputClosed%d %d", closeReason, appSpecificErrorCode);
     }
 
     enum Status {

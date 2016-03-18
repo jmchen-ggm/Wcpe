@@ -16,7 +16,8 @@ import com.cjm.wcpe.sdk.wear.task.WcpeShortTask;
  */
 public class SampleUI extends Activity implements WcpeShortTask.Listener {
     private final static String TAG = "Wcpe.SampleUI";
-    public final static int TEST_FUN_ID = 0x01000;
+    public final static int TEST_SMALL_FUN_ID = 0x01000;
+    public final static int TEST_LARGE_FUN_ID = 0x02000;
     private Button button;
 
     @Override
@@ -28,7 +29,7 @@ public class SampleUI extends Activity implements WcpeShortTask.Listener {
             @Override
             public void onClick(View v) {
                 WcpeShortReq req = new WcpeShortReq();
-                req.funId = TEST_FUN_ID;
+                req.funId = TEST_LARGE_FUN_ID;
                 req.data = "test.string".getBytes();
                 WcpeShortTask wcpeShortTask = new WcpeShortTask(req);
                 wcpeShortTask.setListener(SampleUI.this);
@@ -40,7 +41,7 @@ public class SampleUI extends Activity implements WcpeShortTask.Listener {
     @Override
     public void onEnd(WcpeShortReq req, WcpeShortResp resp) {
         if (resp.code == WcpeProtocol.WcpeCode.OK) {
-            LogUtil.i(TAG, "onEnd %s", new String(resp.data));
+            LogUtil.i(TAG, "onEnd %d", resp.data.length);
         }
     }
 }

@@ -25,9 +25,9 @@ public abstract class BaseWcpeServer {
         String sendPath = WcpePathUtil.encode(path.nodeId, WcpeProtocol.From.Phone, path.connectType,
             path.sessionId, path.funId, contentLength);
         if (contentLength < WcpeProtocol.MAX_MESSAGE_PACK_SIZE) {
-            connection.sendMessage(sendPath, data);
+            connection.sendMessage(path.nodeId, sendPath, responseData);
         } else {
-            connection.sendData(sendPath, data);
+            connection.sendData(path.nodeId, sendPath, responseData);
         }
     }
 
