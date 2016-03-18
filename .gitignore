@@ -1,2 +1,12 @@
+# Gradle
+build/
+**/build/
+
+# Android
 .idea
 .gradle
+local.properties
+*.iml
+
+# OS X
+.DS_Store
